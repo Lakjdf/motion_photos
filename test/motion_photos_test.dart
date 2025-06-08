@@ -6,49 +6,49 @@ import 'package:test/test.dart';
 void main() {
   group('isMotionPhoto', () {
     test('JPEG MotionPhoto', () async {
-      final motionPhotos = MotionPhotos('assets/motionphoto.jpg');
+      final motionPhotos = FileMotionPhotos('assets/motionphoto.jpg');
       expect(await motionPhotos.isMotionPhoto(), true);
     });
 
     test('HEIF MotionPhoto', () async {
-      final motionPhotos = MotionPhotos('assets/motionphoto.heic');
+      final motionPhotos = FileMotionPhotos('assets/motionphoto.heic');
       expect(await motionPhotos.isMotionPhoto(), true);
     });
 
     //  https://github.com/ente-io/photos-app/issues/1551
     test('Pixel 6 Top shot', () async {
-      final motionPhotos = MotionPhotos('assets/pixel_6_small_video.jpg');
+      final motionPhotos = FileMotionPhotos('assets/pixel_6_small_video.jpg');
       expect(await motionPhotos.isMotionPhoto(), true);
     });
 
     test('Not a MotionPhoto', () async {
-      final motionPhotos = MotionPhotos('assets/normalphoto.jpg');
+      final motionPhotos = FileMotionPhotos('assets/normalphoto.jpg');
       expect(await motionPhotos.isMotionPhoto(), false);
     });
 
     test('Not a MotionPhoto (Pixel8)', () async {
-      final motionPhotos = MotionPhotos('assets/pixel_8.jpg');
+      final motionPhotos = FileMotionPhotos('assets/pixel_8.jpg');
       expect(await motionPhotos.isMotionPhoto(), false);
     });
   });
 
   group('getVideoIndex', () {
     test('JPEG MotionPhoto', () async {
-      final motionPhotos = MotionPhotos('assets/motionphoto.jpg');
+      final motionPhotos = FileMotionPhotos('assets/motionphoto.jpg');
       final actualResult = await motionPhotos.getMotionVideoIndex();
       const expectedResult = VideoIndex(start: 3366251, end: 8013982);
       expect(actualResult!, expectedResult);
     });
 
     test('HEIF MotionPhoto', () async {
-      final motionPhotos = MotionPhotos('assets/motionphoto.heic');
+      final motionPhotos = FileMotionPhotos('assets/motionphoto.heic');
       final actualResult = await motionPhotos.getMotionVideoIndex();
       const expectedResult = VideoIndex(start: 1455411, end: 3649069);
       expect(actualResult!, expectedResult);
     });
 
     test('Not a motion photo_pixel', () async {
-      final motionPhotos = MotionPhotos('assets/normalphoto.jpg');
+      final motionPhotos = FileMotionPhotos('assets/normalphoto.jpg');
       final actualResult = await motionPhotos.getMotionVideoIndex();
       expect(actualResult == null, true);
     });
@@ -56,7 +56,7 @@ void main() {
 
   group('getMotionVideo', () {
     test('JPEG MotionPhoto', () async {
-      final motionPhotos = MotionPhotos('assets/motionphoto.jpg');
+      final motionPhotos = FileMotionPhotos('assets/motionphoto.jpg');
       final videoBuffer = await motionPhotos.getMotionVideo();
       final hasVideoContent = boyerMooreSearch(
               videoBuffer, MotionPhotoConstants.mp4HeaderPattern) !=
@@ -65,7 +65,7 @@ void main() {
     });
 
     test('HEIF MotionPhoto', () async {
-      final motionPhotos = MotionPhotos('assets/motionphoto.heic');
+      final motionPhotos = FileMotionPhotos('assets/motionphoto.heic');
       final videoBuffer = await motionPhotos.getMotionVideo();
       final hasVideoContent = boyerMooreSearch(
               videoBuffer, MotionPhotoConstants.mp4HeaderPattern) !=
